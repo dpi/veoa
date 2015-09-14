@@ -1,11 +1,7 @@
-Views Contextual Entity Operation Access Control (VEOA)
+Views Entity Operation Access (VEOA)
 
 Provides a Views access control plugin checking if the user can perform an
 operation on an entity in context.
-
-Access is granted if the current user has permission to execute an operation 
-(view, update, delete, custom, etc) on an entity. It determines which entity to 
-check via contextual arguments.
 
 Copyright (C) 2015 Daniel Phin (@dpi)
 

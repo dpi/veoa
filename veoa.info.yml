@@ -1,4 +1,4 @@
-name: Views Contextual Entity Operation Access
+name: Views Entity Operation Access
 type: module
 description: 'Provides a Views access control plugin checking if the user can perform an operation on an entity in context.'
 package: Views
