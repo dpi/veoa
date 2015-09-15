@@ -105,9 +105,9 @@ class EntityOperation extends AccessPluginBase implements CacheablePluginInterfa
   public function summaryTitle() {
     if ($this->isValidConfig()) {
       if ($entity_type = $this->entityManager->getDefinition($this->options['entity_type'], FALSE)) {
-        return $this->t('@operation @entity_type entity', [
-          '@operation' => ucwords($this->options['operation']),
+        return $this->t('@entity_type: %operation', [
           '@entity_type' => $entity_type->getLabel(),
+          '%operation' => $this->options['operation'],
         ]);
       }
       else {
