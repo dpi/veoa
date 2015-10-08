@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\views\Plugin\CacheablePluginInterface;
 use Drupal\views\Plugin\views\access\AccessPluginBase;
 use Symfony\Component\Routing\Route;
 
@@ -26,7 +25,7 @@ use Symfony\Component\Routing\Route;
  *   help = @Translation("Provides a Views access control plugin checking if the user can perform an operation on an entity.")
  * )
  */
-class EntityOperation extends AccessPluginBase implements CacheablePluginInterface {
+class EntityOperation extends AccessPluginBase {
 
   /**
    * Overrides Drupal\views\Plugin\Plugin::$usesOptions.
@@ -163,20 +162,6 @@ class EntityOperation extends AccessPluginBase implements CacheablePluginInterfa
       '#default_value' => $this->options['operation'],
       '#description' => $this->t('Checks if the current user has access to execute an operation on an event. Common operations include: view, update, create, delete.'),
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isCacheable() {
-    return TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheContexts() {
-    return ['user'];
   }
 
   protected function isValidConfig() {
