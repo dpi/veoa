@@ -1,0 +1,9 @@
+views.access.veoa_entity_access_operation:
+  type: mapping
+  mapping:
+    parameter:
+      type: string
+    entity_type:
+      type: string
+    operation:
+      type: string
