@@ -1,0 +1,16 @@
+{
+  "name": "drupal/veoa",
+  "description": "Provides a Views access control plugin checking if the user can perform an operation on an entity in context.",
+  "type": "drupal-module",
+  "license": "GPL-2.0",
+  "autoload": {
+    "psr-4": {
+      "Drupal\\veoa\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Drupal\\Tests\\veoa\\": "tests/src"
+    }
+  }
+}
