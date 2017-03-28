@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\veoa\Plugin\views\access\EntityOperation.
- */
-
 namespace Drupal\veoa\Plugin\views\access;
 
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -164,6 +159,9 @@ class EntityOperation extends AccessPluginBase {
     ];
   }
 
+  /**
+   * Determine whether configuration is valid.
+   */
   protected function isValidConfig() {
     $entity_types = $this->entityManager->getEntityTypeLabels();
     return
