@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\veoa\Plugin\views\access\EntityOperation.
- */
-
 namespace Drupal\veoa\Plugin\views\access;
 
-use Drupal\Core\Entity\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -33,40 +27,27 @@ class EntityOperation extends AccessPluginBase {
   protected $usesOptions = TRUE;
 
   /**
-   * The entity manager.
+   * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
-   * Constructs a EntityOperation object.
+   * The entity type repository.
    *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
+   * @var \Drupal\Core\Entity\EntityTypeRepositoryInterface
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->entityManager = $entity_manager;
-  }
+  protected $entityTypeRepository;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity.manager')
-    );
+    $instance = new static($configuration, $plugin_id, $plugin_definition);
+    $instance->entityTypeManager = $container->get('entity_type.manager');
+    $instance->entityTypeRepository = $container->get('entity_type.repository');
+    return $instance;
   }
 
   /**
@@ -103,7 +84,7 @@ class EntityOperation extends AccessPluginBase {
    */
   public function summaryTitle() {
     if ($this->isValidConfig()) {
-      if ($entity_type = $this->entityManager->getDefinition($this->options['entity_type'], FALSE)) {
+      if ($entity_type = $this->entityTypeManager->getDefinition($this->options['entity_type'], FALSE)) {
         return $this->t('@entity_type: %operation', [
           '@entity_type' => $entity_type->getLabel(),
           '%operation' => $this->options['operation'],
@@ -146,12 +127,11 @@ class EntityOperation extends AccessPluginBase {
       ]),
     ];
 
-    $this->entityManager->getEntityTypeLabels(TRUE);
     $form['entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Entity type'),
       '#default_value' => $this->options['entity_type'],
-      '#options' => $this->entityManager->getEntityTypeLabels(TRUE),
+      '#options' => $this->entityTypeRepository->getEntityTypeLabels(TRUE),
       '#empty_option' => $this->t('- None -'),
       '#empty_value' => '',
     ];
@@ -165,7 +145,7 @@ class EntityOperation extends AccessPluginBase {
   }
 
   protected function isValidConfig() {
-    $entity_types = $this->entityManager->getEntityTypeLabels();
+    $entity_types = $this->entityTypeRepository->getEntityTypeLabels();
     return
       !empty($this->options['parameter']) &&
       !empty($this->options['entity_type']) &&
