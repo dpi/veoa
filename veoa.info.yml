@@ -2,4 +2,4 @@ name: Views Entity Operation Access
 type: module
 description: 'Provides a Views access control plugin checking if the user can perform an operation on an entity in context.'
 package: Views
-core: 8.x
+core_version_requirement: ^8.7.7 || ^9
